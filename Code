@@ -8,79 +8,90 @@ import java.io.File;
 import java.io.IOException;
 
 public class SlotMachine extends MouseAdapter {
-    public static JLabel amount = new JLabel(String.valueOf(0));
+
 
 
     public static void main(String[] args) {
         JPanel panel = new JPanel(null);
 
-        JFrame frame = new JFrame(String.valueOf(0));
+
+
+        JFrame frame = new JFrame("SlotMachine");
         frame.setVisible(true);
-        frame.setSize(500,500);
+        frame.setSize(550,300);
+        frame.setLocation(600,250);
         frame.add(panel);
 
         JLabel one = new JLabel(String.valueOf(0));
         one.setSize(100, 100);
-        one.setLocation(90, 50);
+        one.setLocation(40, 50);
         one.setFont((new Font("Arial", Font.PLAIN, 30)));
         one.setVisible(true);
         panel.add(one);
 
         JLabel two = new JLabel(String.valueOf(0));
         two.setSize(100, 100);
-        two.setLocation(160, 50);
+        two.setLocation(100, 50);
         two.setFont((new Font("Arial", Font.PLAIN, 30)));
         two.setVisible(true);
         panel.add(two);
 
         JLabel three = new JLabel(String.valueOf(0));
         three.setSize(100, 100);
-        three.setLocation(210, 50);
+        three.setLocation(160, 50);
         three.setFont((new Font("Arial", Font.PLAIN, 30)));
         three.setVisible(true);
         panel.add(three);
 
 
-        amount.setSize(64,64);
-        amount.setVisible(true);
-        amount.setLocation(400, 120);
-        panel.add(amount);
-
         JTextField Bet = new JTextField(String.valueOf(1));
         Bet.setVisible(true);
-        Bet.setSize(20,20);
-        Bet.setLocation(50,200);
+        Bet.setSize(50,20);
+        Bet.setLocation(370,230);
         panel.add(Bet);
+
+        JCheckBox box = new JCheckBox("Always win");
+        box.setVisible(true);
+        box.setSize(90,45);
+        box.setLocation(350,-5);
+        panel.add(box);
 
         JLabel credits = new JLabel(String.valueOf(100));
         credits.setVisible(true);
-        credits.setSize(90,64);
-        credits.setLocation(300, 200);
+        credits.setSize(90,90);
+        credits.setLocation(350, 150);
         credits.setFont((new Font("Clarendon Bold", Font.BOLD, 50)));
         panel.add(credits);
 
 
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        JButton Spin = new JButton("Spin");
-        Spin.setSize(90,90);
-        Spin.setLocation(400,50);
+        JButton Spin = new JButton("Play");
+        Spin.setSize(180,90);
+        Spin.setLocation(300,50);
         Spin.setVisible(true);
         panel.add(Spin);
         Spin.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                int x = (int) Math.round(Math.random()*10);
+                int y = (int) Math.round(Math.random()*10);
+                int z = (int) Math.round(Math.random()*10);
 
-                //MUSIC
-
-                if(Integer.parseInt(Bet.getText()) > Integer.parseInt(credits.getText())){
+                if(Integer.parseInt(Bet.getText()) > Integer.parseInt(credits.getText())&& !box.isSelected()){
                     return;
 
                 }
+
                 if(e.getButton() == MouseEvent.BUTTON1){
-                    one.setText((String.valueOf(Math.round(Math.random()*10))));
-                    two.setText(String.valueOf(Math.round(Math.random()*10)));
-                    three.setText(String.valueOf(Math.round(Math.random()*10)));
+                    one.setText((String.valueOf(x)));
+                    two.setText(String.valueOf(y));
+                    three.setText(String.valueOf(z));
+                    //Always win
+                    if(box.isSelected()){
+                        two.setText(one.getText());
+
+                    }
                     credits.setText(String.valueOf(Integer.parseInt(credits.getText()) - Integer.parseInt(Bet.getText())));
                     if (one.getText().equals(two.getText())&& !one.getText().equals(three.getText())) {
                         credits.setText(String.valueOf(Integer.parseInt(credits.getText()) + 2*(Integer.parseInt(Bet.getText()))));
@@ -107,6 +118,7 @@ public class SlotMachine extends MouseAdapter {
 
 
 
+
                     }else{
                         try {
                             //MUSIC
@@ -120,8 +132,9 @@ public class SlotMachine extends MouseAdapter {
                     }
                     if(Integer.parseInt(credits.getText()) < 0) {
                         credits.setText(String.valueOf(1));
-                        JOptionPane.showMessageDialog(null, "Out Of Credits");
+
                     }
+
 
                     }
             }
